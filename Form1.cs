@@ -89,8 +89,8 @@ namespace PeedyBuddy
             choice.Add(new string[]
             {
                 StaticInfo.charName + " open youtube",
-                StaticInfo.charName + " open steam",
-                StaticInfo.charName + " open notepad"
+                StaticInfo.charName + " open notepad",
+                StaticInfo.charName + " what time"
             });
 
             return choice;
@@ -110,14 +110,23 @@ namespace PeedyBuddy
                     newAgent.Characters[StaticInfo.charName].Speak("Well hello there! I hope you're doing fine today.");
                     break;
                 case StaticInfo.charName + " open notepad":
+                    newAgent.Characters[StaticInfo.charName].Play("Acknowledge");
+                    newAgent.Characters[StaticInfo.charName].Speak("Okay.");
                     Process.Start("notepad.exe", "");
-                    // newAgent.Characters[StaticInfo.charName].Play("Wave"); TODO: Add animation later
                     break;
-                case charName + " open steam":
-                    Process.Start("steam.exe", "");
-                    break;
-                case charName + " open youtube":
+                case StaticInfo.charName + " open youtube":
+                    newAgent.Characters[StaticInfo.charName].Play("Acknowledge");
+                    newAgent.Characters[StaticInfo.charName].Speak("Okay.");
                     Process.Start("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", "https://youtube.com");
+                    break;
+                case StaticInfo.charName + " what time":
+                    // Get current time
+                    DateTime currentTime = DateTime.Now;
+                    // Speak current time
+                    newAgent.Characters[StaticInfo.charName].Speak("The time is " + currentTime.ToString("h:mm tt") + ". Have a nice day!");
+                    break;
+                default:
+                    newAgent.Characters[StaticInfo.charName].Speak("I'm sorry. I don't understand that yet.");
                     break;
             }
         }
