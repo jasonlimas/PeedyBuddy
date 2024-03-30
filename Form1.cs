@@ -15,21 +15,16 @@ namespace PeedyBuddy
 {
     public partial class FormDashboard : Form
     {
-        // Static field to store a reference to the current instance of FormDashboard
-        private static FormDashboard currentInstance;
-
         DoubleAgent.AxControl.AxControl newAgent;
         SpeechRecognitionEngine speechRecognizer;
 
         public FormDashboard()
         {
             InitializeComponent();
-
-            // Set the currentInstance to this instance of FormDashboard
-            currentInstance = this;
+            InitializeAgent();
         }
 
-        private void FormDashboard_Load(object sender, EventArgs e)
+        private void InitializeAgent()
         {
             newAgent = new DoubleAgent.AxControl.AxControl();
             newAgent.CreateControl();
@@ -38,19 +33,48 @@ namespace PeedyBuddy
             newAgent.Characters[charName].Show();
         }
 
-        private void ButtonShow_Click(object sender, EventArgs e)
+        // The next 3 functions below are simply for telling the agent to show itself and speak from the input parameter
+        private void ShowAgent()
         {
             newAgent.Characters[StaticInfo.charName].Show();
         }
 
-        private void ButtonHide_Click(object sender, EventArgs e)
+        private void HideAgent()
         {
             newAgent.Characters[StaticInfo.charName].Hide();
         }
 
+        private void SpeakWithAgent(string text)
+        {
+            newAgent.Characters[StaticInfo.charName].Speak(text);
+        }
+
+        private void SpeakCurrentTime()
+        {
+            // Get current time
+            DateTime currentTime = DateTime.Now;
+            // Speak current time
+            SpeakWithAgent("The time is " + currentTime.ToString("h:mm tt") + ". Have a nice day!");
+        }
+
+        private void FormDashboard_Load(object sender, EventArgs e)
+        {
+            // InitializeAgent(); ?
+        }
+
+        private void ButtonShow_Click(object sender, EventArgs e)
+        {
+            ShowAgent();
+        }
+
+        private void ButtonHide_Click(object sender, EventArgs e)
+        {
+            HideAgent();
+        }
+
         private void ButtonSpeak_Click(object sender, EventArgs e)
         {
-            newAgent.Characters[StaticInfo.charName].Speak(TextSpeak.Text);
+            SpeakWithAgent(TextSpeak.Text);
         }
 
         private void loadSpeechRecognition()
@@ -73,6 +97,7 @@ namespace PeedyBuddy
             speechRecognizer.RecognizeAsync(RecognizeMode.Multiple);
         }
 
+        // For building grammar
         private Choices getChoiceLibrary()
         {
             Choices choice = new Choices();
@@ -95,40 +120,37 @@ namespace PeedyBuddy
 
             return choice;
         }
-
+    
         // Handle the SpeechRecognized event.
-        static void speechRecognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        private void HandleSpeechRecognitionResult(SpeechRecognizedEventArgs e)
         {
-            // Access the newAgent field through the currentInstance
-            DoubleAgent.AxControl.AxControl newAgent = currentInstance.newAgent;
-
             switch (e.Result.Text)
             {
                 case "hey " + StaticInfo.charName:
                 case "hi " + StaticInfo.charName:
                 case "hello " + StaticInfo.charName:
-                    newAgent.Characters[StaticInfo.charName].Speak("Well hello there! I hope you're doing fine today.");
+                    SpeakWithAgent("Well hello there! I hope you're doing fine today.");
                     break;
                 case StaticInfo.charName + " open notepad":
-                    newAgent.Characters[StaticInfo.charName].Play("Acknowledge");
-                    newAgent.Characters[StaticInfo.charName].Speak("Okay.");
+                    SpeakWithAgent("Okay.");
                     Process.Start("notepad.exe", "");
                     break;
                 case StaticInfo.charName + " open youtube":
-                    newAgent.Characters[StaticInfo.charName].Play("Acknowledge");
-                    newAgent.Characters[StaticInfo.charName].Speak("Okay.");
+                    SpeakWithAgent("Okay.");
                     Process.Start("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", "https://youtube.com");
                     break;
                 case StaticInfo.charName + " what time":
-                    // Get current time
-                    DateTime currentTime = DateTime.Now;
-                    // Speak current time
-                    newAgent.Characters[StaticInfo.charName].Speak("The time is " + currentTime.ToString("h:mm tt") + ". Have a nice day!");
+                    SpeakCurrentTime();
                     break;
                 default:
-                    newAgent.Characters[StaticInfo.charName].Speak("I'm sorry. I don't understand that yet.");
+                    SpeakWithAgent("I'm sorry. I don't understand that yet.");
                     break;
             }
+        }
+
+        private void speechRecognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        {
+            HandleSpeechRecognitionResult(e);
         }
 
     }
