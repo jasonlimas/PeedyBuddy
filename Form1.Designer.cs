@@ -32,6 +32,7 @@
             this.ButtonHide = new System.Windows.Forms.Button();
             this.TextSpeak = new System.Windows.Forms.TextBox();
             this.ButtonSpeak = new System.Windows.Forms.Button();
+            this.ButtonTestSpeech = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ButtonShow
@@ -76,11 +77,23 @@
             this.ButtonSpeak.UseVisualStyleBackColor = true;
             this.ButtonSpeak.Click += new System.EventHandler(this.ButtonSpeak_Click);
             // 
+            // ButtonTestSpeech
+            // 
+            this.ButtonTestSpeech.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonTestSpeech.Location = new System.Drawing.Point(12, 157);
+            this.ButtonTestSpeech.Name = "ButtonTestSpeech";
+            this.ButtonTestSpeech.Size = new System.Drawing.Size(263, 81);
+            this.ButtonTestSpeech.TabIndex = 4;
+            this.ButtonTestSpeech.Text = "Test Speech Recognition";
+            this.ButtonTestSpeech.UseVisualStyleBackColor = true;
+            this.ButtonTestSpeech.Click += new System.EventHandler(this.ButtonTestSpeech_Click);
+            // 
             // FormDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(287, 171);
+            this.ClientSize = new System.Drawing.Size(287, 250);
+            this.Controls.Add(this.ButtonTestSpeech);
             this.Controls.Add(this.ButtonSpeak);
             this.Controls.Add(this.TextSpeak);
             this.Controls.Add(this.ButtonHide);
@@ -99,6 +112,7 @@
         private System.Windows.Forms.Button ButtonHide;
         private System.Windows.Forms.TextBox TextSpeak;
         private System.Windows.Forms.Button ButtonSpeak;
+        private System.Windows.Forms.Button ButtonTestSpeech;
     }
 }
 
