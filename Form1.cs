@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Speech.Recognition;
 using System.Diagnostics;
@@ -18,11 +11,37 @@ namespace PeedyBuddy
         DoubleAgent.AxControl.AxControl newAgent;
         SpeechRecognitionEngine speechRecognizer;
 
+        // New
+        private GoogleSpeechRecognition _speechRecognition;
+
         public FormDashboard()
         {
             InitializeComponent();
             InitializeAgent();
+
+            // New
+            _speechRecognition = new GoogleSpeechRecognition();
+            _speechRecognition.SpeechRecognized += DisplayRecognizedSpeech;
         }
+
+        // New
+        private void DisplayRecognizedSpeech(string text)
+        {
+            // Display the recognized text in a MessageBox
+            MessageBox.Show(text, "Speech Recognized");
+        }
+
+        private void ButtonTestSpeech_Click(object sender, EventArgs e)
+        {
+            // Start listening for speech when the Listen button is clicked
+            _speechRecognition.StartListening();
+        }
+       
+
+
+
+
+
 
         private void FormDashboard_Load(object sender, EventArgs e)
         {
@@ -158,5 +177,48 @@ namespace PeedyBuddy
             HandleSpeechRecognitionResult(e);
         }
 
+        /// <summary>
+        ///  GOOGLE SPEECH TO TEXT TEST!
+        /// </summary>
+        /// 
+        /*
+        private void ButtonTestSpeech_Click(object sender, EventArgs e)
+        {
+            // Start speech recognition
+            StartSpeechRecognition();
+        }
+
+        private void StartSpeechRecognition()
+        {
+            // Initialize the speech recognizer
+            GoogleSpeechRecognition speechRecognition = new GoogleSpeechRecognition();
+
+            // Subscribe to the speech recognized event
+            speechRecognition.SpeechRecognized += SpeechRecognition_SpeechRecognized;
+
+            // Start listening for speech
+            speechRecognition.StartListening();
+        }
+
+        private void SpeechRecognition_SpeechRecognized(string recognizedText)
+        {
+            // Process the recognized text
+            ProcessRecognizedText(recognizedText);
+        }
+
+        private void ProcessRecognizedText(string recognizedText)
+        {
+            // Perform actions based on the recognized text
+            if (recognizedText.Contains("today and tomorrow"))
+            {
+                SpeakWithAgent("You said today and tomorrow");
+            }
+            else if (recognizedText.Contains("hello world"))
+            {
+                SpeakWithAgent("Hello world!");
+            }
+            // Add more commands and actions as needed
+        }
+        */
     }
 }
