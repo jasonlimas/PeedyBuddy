@@ -24,11 +24,16 @@ namespace PeedyBuddy
             InitializeAgent();
         }
 
+        private void FormDashboard_Load(object sender, EventArgs e)
+        {
+            // InitializeAgent(); ?
+        }
+
         private void InitializeAgent()
         {
             newAgent = new DoubleAgent.AxControl.AxControl();
             newAgent.CreateControl();
-            newAgent.Characters.Load(StaticInfo.charName, StaticInfo.charFileLocation);
+            newAgent.Characters.Load(StaticInfo.charName, StaticInfo.charPath);
             loadSpeechRecognition();
             newAgent.Characters[charName].Show();
         }
@@ -55,11 +60,6 @@ namespace PeedyBuddy
             DateTime currentTime = DateTime.Now;
             // Speak current time
             SpeakWithAgent("The time is " + currentTime.ToString("h:mm tt") + ". Have a nice day!");
-        }
-
-        private void FormDashboard_Load(object sender, EventArgs e)
-        {
-            // InitializeAgent(); ?
         }
 
         private void ButtonShow_Click(object sender, EventArgs e)
@@ -120,9 +120,14 @@ namespace PeedyBuddy
 
             return choice;
         }
-    
+
         // Handle the SpeechRecognized event.
         private void HandleSpeechRecognitionResult(SpeechRecognizedEventArgs e)
+        {
+            HandleSpeechRecognitionResult(e, newAgent);
+        }
+
+        private void HandleSpeechRecognitionResult(SpeechRecognizedEventArgs e, DoubleAgent.AxControl.AxControl agent)
         {
             switch (e.Result.Text)
             {
