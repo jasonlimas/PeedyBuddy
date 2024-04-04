@@ -137,6 +137,7 @@ namespace PeedyBuddy
 
         private void HandleSpeechRecognitionResult(SpeechRecognizedEventArgs e, DoubleAgent.AxControl.AxControl agent)
         {
+            // When Peedy is called, Google SST will start listening
             if (e.Result.Text == "hey " + StaticInfo.charName ||
                 e.Result.Text == "hi " + StaticInfo.charName ||
                 e.Result.Text == "hello " + StaticInfo.charName)
