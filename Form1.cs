@@ -24,23 +24,19 @@ namespace PeedyBuddy
             _speechRecognition.SpeechRecognized += DisplayRecognizedSpeech;
         }
 
-        // New
+        // New, temporary i think
         private void DisplayRecognizedSpeech(string text)
         {
             // Display the recognized text in a MessageBox
             MessageBox.Show(text, "Speech Recognized");
         }
 
+        // New, temporary
         private void ButtonTestSpeech_Click(object sender, EventArgs e)
         {
             // Start listening for speech when the Listen button is clicked
             _speechRecognition.StartListening();
         }
-       
-
-
-
-
 
 
         private void FormDashboard_Load(object sender, EventArgs e)
@@ -96,6 +92,7 @@ namespace PeedyBuddy
             SpeakWithAgent(TextSpeak.Text);
         }
 
+        // (System.Speech.Recognition speech recog)
         private void loadSpeechRecognition()
         {
             // Initialize speech recognizer with en-US language/locale
@@ -116,7 +113,7 @@ namespace PeedyBuddy
             speechRecognizer.RecognizeAsync(RecognizeMode.Multiple);
         }
 
-        // For building grammar
+        // For building grammar (System.Speech.Recognition speech recog)
         private Choices getChoiceLibrary()
         {
             Choices choice = new Choices();
@@ -129,18 +126,10 @@ namespace PeedyBuddy
                 "hello " + StaticInfo.charName
             });
 
-            // Open things
-            choice.Add(new string[]
-            {
-                StaticInfo.charName + " open youtube",
-                StaticInfo.charName + " open notepad",
-                StaticInfo.charName + " what time"
-            });
-
             return choice;
         }
 
-        // Handle the SpeechRecognized event.
+        // Handle the SpeechRecognized event. (System.Speech.Recognition speech recog)
         private void HandleSpeechRecognitionResult(SpeechRecognizedEventArgs e)
         {
             HandleSpeechRecognitionResult(e, newAgent);
@@ -148,27 +137,12 @@ namespace PeedyBuddy
 
         private void HandleSpeechRecognitionResult(SpeechRecognizedEventArgs e, DoubleAgent.AxControl.AxControl agent)
         {
-            switch (e.Result.Text)
+            if (e.Result.Text == "hey " + StaticInfo.charName ||
+                e.Result.Text == "hi " + StaticInfo.charName ||
+                e.Result.Text == "hello " + StaticInfo.charName)
             {
-                case "hey " + StaticInfo.charName:
-                case "hi " + StaticInfo.charName:
-                case "hello " + StaticInfo.charName:
-                    SpeakWithAgent("Well hello there! I hope you're doing fine today.");
-                    break;
-                case StaticInfo.charName + " open notepad":
-                    SpeakWithAgent("Okay.");
-                    Process.Start("notepad.exe", "");
-                    break;
-                case StaticInfo.charName + " open youtube":
-                    SpeakWithAgent("Okay.");
-                    Process.Start("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", "https://youtube.com");
-                    break;
-                case StaticInfo.charName + " what time":
-                    SpeakCurrentTime();
-                    break;
-                default:
-                    SpeakWithAgent("I'm sorry. I don't understand that yet.");
-                    break;
+                    // Start listening (using Google's Speech to Text) when Peedy is called
+                    _speechRecognition.StartListening();
             }
         }
 
@@ -176,49 +150,5 @@ namespace PeedyBuddy
         {
             HandleSpeechRecognitionResult(e);
         }
-
-        /// <summary>
-        ///  GOOGLE SPEECH TO TEXT TEST!
-        /// </summary>
-        /// 
-        /*
-        private void ButtonTestSpeech_Click(object sender, EventArgs e)
-        {
-            // Start speech recognition
-            StartSpeechRecognition();
-        }
-
-        private void StartSpeechRecognition()
-        {
-            // Initialize the speech recognizer
-            GoogleSpeechRecognition speechRecognition = new GoogleSpeechRecognition();
-
-            // Subscribe to the speech recognized event
-            speechRecognition.SpeechRecognized += SpeechRecognition_SpeechRecognized;
-
-            // Start listening for speech
-            speechRecognition.StartListening();
-        }
-
-        private void SpeechRecognition_SpeechRecognized(string recognizedText)
-        {
-            // Process the recognized text
-            ProcessRecognizedText(recognizedText);
-        }
-
-        private void ProcessRecognizedText(string recognizedText)
-        {
-            // Perform actions based on the recognized text
-            if (recognizedText.Contains("today and tomorrow"))
-            {
-                SpeakWithAgent("You said today and tomorrow");
-            }
-            else if (recognizedText.Contains("hello world"))
-            {
-                SpeakWithAgent("Hello world!");
-            }
-            // Add more commands and actions as needed
-        }
-        */
     }
 }

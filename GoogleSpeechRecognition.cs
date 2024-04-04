@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Windows.Forms;
 using Google.Cloud.Speech.V1;
 using NAudio.Wave;
 
@@ -18,7 +17,6 @@ public class GoogleSpeechRecognition
     public void StartListening()
     {
         // Start capturing audio from the microphone and perform speech recognition
-        // For simplicity, this is a placeholder method. Implement actual audio capture logic.
         byte[] audioData = CaptureAudio();
         RecognizeSpeechAsync(audioData);
     }
